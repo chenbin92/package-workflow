@@ -1,0 +1,19 @@
+{
+  "name": "pkg-bar",
+  "version": "0.1.31",
+  "license": "MIT",
+  "files": [
+    "lib"
+  ],
+  "main": "lib/index.js",
+  "publishConfig": {
+    "registry": "http://registry.npmjs.com/"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "engines": {
+    "node": ">=8.6.0",
+    "npm": ">=3.0.0"
+  }
+}
