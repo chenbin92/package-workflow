@@ -10,13 +10,13 @@ const lerna = require.resolve('lerna/cli')
 
 async function publish() {
 
-  log('1. ✔️ ✔️ ✔️  代码检查...')
-  // const gitStatus = await run('git status --porcelain');
-  const status = await gitP().status()
-  if (status.modified.length) {
-    console.log(chalk.red('   ⚠️  ⚠️  ⚠️  本地存在文件改动禁止发布...\n'))
-    process.exit(0)
-  }
+  // log('1. ✔️ ✔️ ✔️  代码检查...')
+  // // const gitStatus = await run('git status --porcelain');
+  // const status = await gitP().status()
+  // if (status.modified.length) {
+  //   console.log(chalk.red('   ⚠️  ⚠️  ⚠️  本地存在文件改动禁止发布...\n'))
+  //   process.exit(0)
+  // }
 
   log('2. ✔️ ✔️ ✔️  版本检查...')
   const { stdout } = execa.commandSync('lerna changed');
@@ -25,9 +25,10 @@ async function publish() {
     console.log(chalk.red('   ⚠️  ⚠️  ⚠️  没有需要发布的包...\n'))
     process.exit(0)
   }
+  console.log(needsPublishPackages)
 
-  log('3. 📦 📦 📦 构建代码...')
-  await run('npm run build')
+  // log('3. 📦 📦 📦 构建代码...')
+  // await run('npm run build')
 
   log('4. ⚡ ⚡ ⚡ 更新版本...')
   await run('lerna version --exact --no-commit-hooks --no-git-tag-version --no-push')
@@ -40,9 +41,9 @@ async function publish() {
   const isLatestVersion = (newVersion.includes('rc') || newVersion.includes('alpha') || newVersion.includes('beta')) ? false : true
   const { packageDirs } = await getWorkspacePackages()
   packageDirs.forEach((pkgDir) => {
-    if (needsPublishPackages.includes(basename(pkgDir))) {
-      const pkgContent = require(join(pkgDir, 'package.json'))
-      const { name, version } = pkgContent;
+    const pkgContent = require(join(pkgDir, 'package.json'))
+    const { name, version } = pkgContent;
+    if (needsPublishPackages.includes(name)) {
       console.log(`📦 📦 📦 开始发布 ${name}@${version}`)
       const publishArgs = isLatestVersion ? 'publish' : 'publish --tag=beta'
       execa.commandSync(`npm ${publishArgs}`, {
@@ -63,8 +64,8 @@ async function publish() {
   }
   log(`\n\n 🎉 🎉 🎉 版本发布完成...`)
 
-  log('💡 💡 💡 同步版本...')
-  await run('npm run sync')
+  // log('💡 💡 💡 同步版本...')
+  // await run('npm run sync')
 }
 
 function log(msg) {
