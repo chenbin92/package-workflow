@@ -1,14 +1,14 @@
 {
   "name": "pkg-foo-bar",
-  "version": "0.1.48",
+  "version": "0.1.49",
   "license": "MIT",
   "files": [
     "lib"
   ],
   "main": "lib/index.js",
   "dependencies": {
-    "pkg-bar": "0.1.48",
-    "pkg-foo": "0.1.48"
+    "pkg-bar": "0.1.49",
+    "pkg-foo": "0.1.49"
   },
   "publishConfig": {
     "registry": "http://registry.npmjs.com/"
