@@ -15,5 +15,6 @@
   "engines": {
     "node": ">=8.6.0",
     "npm": ">=3.0.0"
-  }
+  },
+  "gitHead": "e6b62a92bb9f4b34dceda6dd3171e2c3b6c84606"
 }
