@@ -10,13 +10,19 @@ const lerna = require.resolve('lerna/cli')
 
 async function publish() {
 
-  log('1. ✔️ ✔️ ✔️  依赖检查...')
-
-  log('2. ✔️ ✔️ ✔️  代码检查...')
+  log('1. ✔️ ✔️ ✔️  代码检查...')
   // const gitStatus = await run('git status --porcelain');
   const status = await gitP().status()
   if (status.modified.length) {
     console.log(chalk.red('   ⚠️  ⚠️  ⚠️  本地存在文件改动禁止发布...\n'))
+    process.exit(0)
+  }
+
+  log('2. ✔️ ✔️ ✔️  版本检查...')
+  const { stdout } = execa.commandSync('lerna changed');
+  const needsPublishPackages = stdout.split('\n') || [];
+  if (!needsPublishPackages.length) {
+    console.log(chalk.red('   ⚠️  ⚠️  ⚠️  没有需要发布的包...\n'))
     process.exit(0)
   }
 
