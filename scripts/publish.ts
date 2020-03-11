@@ -1,4 +1,4 @@
-import { join } from 'path'
+import { join, basename } from 'path'
 import * as execa from 'execa'
 import * as fse from 'fs-extra'
 import { run } from './fn/shell'
@@ -40,14 +40,16 @@ async function publish() {
   const isLatestVersion = (newVersion.includes('rc') || newVersion.includes('alpha') || newVersion.includes('beta')) ? false : true
   const { packageDirs } = await getWorkspacePackages()
   packageDirs.forEach((pkgDir) => {
-    const pkgContent = require(join(pkgDir, 'package.json'))
-    const { name, version } = pkgContent;
-    console.log(`📦 📦 📦 开始发布 ${name}@${version}`)
-    const publishArgs = isLatestVersion ? 'publish' : 'publish --tag=beta'
-    execa.commandSync(`npm ${publishArgs}`, {
-      cwd: pkgDir,
-      stdio: 'inherit'
-    });
+    if (needsPublishPackages.includes(basename(pkgDir))) {
+      const pkgContent = require(join(pkgDir, 'package.json'))
+      const { name, version } = pkgContent;
+      console.log(`📦 📦 📦 开始发布 ${name}@${version}`)
+      const publishArgs = isLatestVersion ? 'publish' : 'publish --tag=beta'
+      execa.commandSync(`npm ${publishArgs}`, {
+        cwd: pkgDir,
+        stdio: 'inherit'
+      });
+    }
   });
 
   log(`6. 🔖 🔖 🔖 提交代码${isLatestVersion ? ' & 创建 tag' : ''}...`)
