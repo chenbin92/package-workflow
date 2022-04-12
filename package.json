@@ -45,7 +45,7 @@
   "dependencies": {
     "chalk": "^3.0.0",
     "core-js": "^3.6.4",
-    "simple-git": "^1.131.0",
+    "simple-git": "^3.5.0",
     "yargs": "^15.1.0"
   },
   "version": "0.0.3"
